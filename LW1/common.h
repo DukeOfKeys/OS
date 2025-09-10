@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <fstream>
 #include <cstring>
@@ -20,19 +21,19 @@ struct employee
     int num;       // идентификационный номер сотрудника
     char name[10]; // имя сотрудника
     double hours;  // количество отработанных часов
-};
 
-std::istream &operator>>(std::istream &in, employee &obj)
-{
-    in >> obj.num;
-    std::string name = "";
-    in >> name;
-    strncpy(obj.name, name.c_str(), 10);
-    in >> obj.hours;
-    return in;
-}
-std::ostream &operator<<(std::ostream &out, const employee &obj)
-{
-    out << obj.num << " " << obj.name << " " << obj.hours;
-    return out;
-}
+    friend std::istream &operator>>(std::istream &in, employee &obj)
+    {
+        in >> obj.num;
+        std::string name = "";
+        in >> name;
+        strncpy(obj.name, name.c_str(), 10);
+        in >> obj.hours;
+        return in;
+    }
+    friend std::ostream &operator<<(std::ostream &out, const employee &obj)
+    {
+        out << obj.num << " " << obj.name << " " << obj.hours;
+        return out;
+    }
+};

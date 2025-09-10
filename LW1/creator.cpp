@@ -1,4 +1,5 @@
 #include "common.h"
+#include "creator_func.h"
 using namespace std;
 /// @brief creator helper programm
 /// @param argc expects to be 3
@@ -8,23 +9,20 @@ int main(int argc, char *argv[])
 {
     if (argc != 3)
         return EXIT_FAILURE;
-
-    ofstream file_bin_out(argv[1], ios::binary);
-    if (!file_bin_out.is_open())
-        EXIT_FAILURE;
-
-    int ammount = atoi(argv[2]);
-
-    for (int index = 0; index < ammount; index++)
+    int amount = 0;
+    try
     {
-        cout << "Enter employee info in the predefined order:\nID NAME WORK_HOURS" << endl;
-
-        employee e_info = {};
-
-        cin >> e_info;
-        file_bin_out.write((char *)&e_info, sizeof(employee));
+        amount = stoi(argv[2]);
+    }
+    catch (...)
+    {
+        return EXIT_FAILURE;
     }
 
-    file_bin_out.close();
+    if (amount <= 0)
+        return EXIT_FAILURE;
+
+    if (!write_employees_to_file(argv[1], amount))
+        return EXIT_FAILURE;
     return EXIT_SUCCESS;
 }
