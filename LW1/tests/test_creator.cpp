@@ -3,20 +3,20 @@
 #include <sstream>
 #include <fstream>
 #include <vector>
-
+using namespace std;
 TEST(CreatorTests, WritesEmployeesCorrectly)
 {
-    std::string test_file = "test_employees.bin";
+    string test_file = "test_employees.bin";
 
-    std::istringstream fake_input("1 Alice 40\n2 Bob 35\n");
-    std::cin.rdbuf(fake_input.rdbuf());
+    istringstream fake_input("1 Alice 40\n2 Bob 35\n");
+    cin.rdbuf(fake_input.rdbuf());
 
     ASSERT_TRUE(write_employees_to_file(test_file, 2));
 
-    std::ifstream file(test_file, std::ios::binary);
+    ifstream file(test_file, ios::binary);
     ASSERT_TRUE(file.is_open());
 
-    std::vector<employee> emps(2);
+    vector<employee> emps(2);
     file.read(reinterpret_cast<char *>(emps.data()), sizeof(employee) * 2);
 
     EXPECT_EQ(emps[0].num, 1);

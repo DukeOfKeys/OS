@@ -1,0 +1,1 @@
+bool generate_report(const char *binary_filename, const char *report_filename, int hour_salary);

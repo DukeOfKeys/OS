@@ -31,8 +31,11 @@ target_include_directories(creator_func PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 add_executable(creator creator.cpp)
 target_link_libraries(creator PRIVATE creator_func user32 gdi32 kernel32 advapi32)
 
+add_library(reporter_func STATIC reporter_func.cpp)
+target_include_directories(reporter_func PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
 add_executable(reporter reporter.cpp)
-target_link_libraries(reporter PRIVATE user32 gdi32 kernel32 advapi32)
+target_link_libraries(reporter PRIVATE reporter_func user32 gdi32 kernel32 advapi32)
 
 include(FetchContent)
 FetchContent_Declare(
