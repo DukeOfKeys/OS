@@ -11,10 +11,12 @@ int main()
     arrayData info = {};
     info.array = array;
     info.size = size_of_array;
-
+    arrayData info2 = {};
+    info2.array = array;
+    info2.size = size_of_array;
 #if defined(USED_STANDART_WIN_API)
     HANDLE hThread = CreateThread(NULL, 0, min_max, &info, 0, NULL);
-
+    HANDLE hThread2 = CreateThread(NULL, 0, avarage, &info2, 0, NULL);
     DWORD_PTR ret;
     WaitForSingleObject(hThread, INFINITE);
     GetExitCodeThread(hThread, (LPDWORD)&ret);
@@ -23,25 +25,23 @@ int main()
     long long result = info.result;
     int min = *((int *)&result);
     int max = *((int *)&result + 1);
-
-    hThread = CreateThread(NULL, 0, avarage, &info, 0, NULL);
-    WaitForSingleObject(hThread, INFINITE);
+    WaitForSingleObject(hThread2, INFINITE);
     ret = 0;
-    GetExitCodeThread(hThread, (LPDWORD)&ret);
-    CloseHandle(hThread);
+    GetExitCodeThread(hThread2, (LPDWORD)&ret);
+    CloseHandle(hThread2);
     array[min] = ret;
     array[max] = ret;
 #elif defined(USED_CXX_THREADS)
     std::thread t1((void (*)(arrayData *))min_max, &info);
+    std::thread t2((void (*)(arrayData *))avarage, &info2);
+    t2.join();
     t1.join();
 
     long long result = info.result;
     int min = (int)(result & 0xFFFFFFFF);
     int max = (int)((result >> 32) & 0xFFFFFFFF);
 
-    std::thread t2((void (*)(arrayData *))avarage, &info);
-    t2.join();
-    int avg = info.result;
+    int avg = info2.result;
     array[min] = avg;
     array[max] = avg;
 

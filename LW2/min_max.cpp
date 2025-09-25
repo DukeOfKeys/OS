@@ -59,6 +59,7 @@ void min_max(arrayData *data)
                 max = index - 1;
             if (array[index] < array[min])
                 min = index;
+            this_thread::sleep_for(chrono::milliseconds(7));
         }
         else
         {
@@ -66,9 +67,10 @@ void min_max(arrayData *data)
                 max = index;
             if (array[index - 1] < array[min])
                 min = index - 1;
+            this_thread::sleep_for(chrono::milliseconds(7));
         }
 
-        this_thread::sleep_for(chrono::milliseconds(21));
+        this_thread::sleep_for(chrono::milliseconds(7));
     }
     *((int *)answer) = min;
     *(((int *)answer) + 1) = max;
